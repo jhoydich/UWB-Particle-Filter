@@ -39,8 +39,11 @@ type ParticleFilter struct {
 	printIter       bool
 }
 
+// createpf creates an a particle filter object with various parameters
 func CreatePF(numSamps int, percResamp, sigma, xLimit, yLimit float64) *ParticleFilter {
 	anchors := make(map[string][]float64)
+
+	// TODO: make this more dynamic
 	anchors["A9CF"] = []float64{0, 3.04}
 	anchors["F95B"] = []float64{0, 0}
 
@@ -63,7 +66,7 @@ func CreatePF(numSamps int, percResamp, sigma, xLimit, yLimit float64) *Particle
 	return pf
 }
 
-// check if weight is greater than
+// check if weight is greater than current max weight
 func (pf *ParticleFilter) checkAndSetMaxWeight(weight float64, override bool) {
 	if weight > pf.MaxWeight {
 		pf.MaxWeight = weight
@@ -84,6 +87,7 @@ func (pf *ParticleFilter) createParticle() Particle {
 	return p
 }
 
+// create initial sample list
 func (pf *ParticleFilter) createSampleList() {
 	for i := 0; i < pf.NumSamples; i++ {
 		p := pf.createParticle()
